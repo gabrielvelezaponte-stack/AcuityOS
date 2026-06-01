@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AcuityOS | Website Final</title>
+  <style>
+    :root {
+      --primary: #2558aa;
+      --primary-dark: #17396f;
+      --primary-soft: #eef5ff;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #142033;
+      --muted: #667085;
+      --line: #d7deea;
+      --shadow: 0 14px 38px rgba(15, 23, 42, 0.10);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: Arial, Helvetica, sans-serif; color: var(--text); background: var(--bg); line-height: 1.65; }
+    a { color: inherit; }
+    .hero {
+      min-height: 84vh;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 30px;
+      align-items: center;
+      padding: 44px clamp(18px, 5vw, 76px);
+      background: radial-gradient(circle at top left, rgba(37, 88, 170, 0.16), transparent 30%),
+      linear-gradient(135deg, #eef6ff 0%, #ffffff 58%, #e9f2ff 100%);
+    }
+    .hero h1 { color: var(--primary); font-size: clamp(3rem, 9vw, 6.8rem); line-height: 0.95; letter-spacing: -3px; margin-bottom: 18px; }
+    .kicker {
+      display: inline-block; padding: 8px 14px; border-radius: 999px; background: var(--primary-soft);
+      color: var(--primary-dark); border: 1px solid var(--line); font-weight: 800; font-size: 0.88rem; margin-bottom: 18px;
+    }
+    .hero p { color: #344054; font-size: clamp(1.02rem, 2vw, 1.22rem); max-width: 820px; margin-bottom: 14px; }
+    .hero-actions, .button-row { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      display: inline-block; text-decoration: none; padding: 12px 18px; border-radius: 999px; background: var(--primary);
+      color: white; border: 1px solid var(--primary); font-weight: 800; box-shadow: 0 12px 22px rgba(37, 88, 170, 0.22);
+    }
+    .btn.secondary { background: white; color: var(--primary-dark); border: 1px solid var(--line); box-shadow: none; }
+    .hero-image { overflow: hidden; border-radius: 30px; border: 1px solid var(--line); background: white; box-shadow: var(--shadow); }
+    .hero-image img { display: block; width: 100%; height: auto; }
+    .shell { max-width: 1220px; margin: -42px auto 54px; padding: 0 16px; position: relative; z-index: 2; }
+    .site-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .tabs {
+      position: sticky; top: 0; z-index: 50; display: flex; gap: 8px; overflow-x: auto; padding: 12px;
+      background: rgba(255, 255, 255, 0.97); border-bottom: 1px solid var(--line); scrollbar-width: thin;
+    }
+    .tab-button {
+      flex: 0 0 auto; border: 1px solid var(--line); background: white; color: var(--primary-dark); border-radius: 999px;
+      padding: 10px 14px; font-weight: 800; cursor: pointer; font-size: 0.92rem; white-space: nowrap;
+    }
+    .tab-button.active { background: var(--primary); border-color: var(--primary); color: white; box-shadow: 0 10px 20px rgba(37, 88, 170, 0.20); }
+    .panel { display: none; padding: clamp(22px, 4vw, 44px); animation: fade 0.18s ease-in-out; }
+    .panel.active { display: block; }
+    @keyframes fade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    .section-head { margin-bottom: 22px; }
+    .section-head span { display: inline-block; color: var(--primary); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.86rem; font-weight: 900; margin-bottom: 4px; }
+    .section-head h2 { color: var(--primary-dark); font-size: clamp(1.8rem, 4vw, 2.7rem); line-height: 1.14; letter-spacing: -0.8px; }
+    h3 { color: var(--primary-dark); margin: 18px 0 8px; font-size: 1.26rem; }
+    .lead { color: #344054; font-size: 1.08rem; max-width: 960px; margin-bottom: 16px; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 20px; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04); }
+    .card.blue { background: var(--primary-soft); }
+    .card h3 { margin-top: 0; }
+    .list { margin: 10px 0 0 20px; }
+    .list li { margin-bottom: 8px; }
+    .highlight {
+      background: linear-gradient(135deg, var(--primary-soft), #fff); border: 1px solid var(--line); border-left: 6px solid var(--primary);
+      border-radius: 18px; padding: 20px; margin: 22px 0;
+    }
+    .highlight strong { color: var(--primary-dark); }
+    .pdf-visual { margin-top: 24px; border-radius: 20px; overflow: hidden; background: white; border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .pdf-visual img { display: block; width: 100%; height: auto; background: white; }
+    .pdf-visual p { padding: 10px 14px; color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--line); background: white; }
+    .video-wrap { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; border-radius: 20px; overflow: hidden; background: #000; box-shadow: var(--shadow); border: 1px solid var(--line); margin-top: 16px; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .business-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+    .business-box { background: white; border: 1px solid var(--line); border-top: 5px solid var(--primary); border-radius: 18px; padding: 18px; min-height: 170px; }
+    .stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 20px; }
+    .stat { text-align: center; background: white; border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+    .stat strong { display: block; color: var(--primary); font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1; margin-bottom: 6px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .tag { padding: 7px 12px; border-radius: 999px; background: var(--primary-soft); color: var(--primary-dark); border: 1px solid var(--line); font-size: 0.84rem; font-weight: 800; }
+    .reference-list { margin-left: 22px; }
+    .reference-list li { margin-bottom: 15px; }
+    footer { background: var(--primary-dark); color: white; text-align: center; padding: 28px 16px; }
+    footer p { opacity: 0.82; margin-top: 5px; }
+    @media (max-width: 900px) {
+      .hero { min-height: auto; grid-template-columns: 1fr; padding: 36px 16px 64px; }
+      .hero h1 { letter-spacing: -2px; }
+      .shell { margin-top: -40px; padding: 0 10px; }
+      .grid, .grid.two, .business-grid, .stat-grid { grid-template-columns: 1fr; }
+      .panel { padding: 22px 16px 30px; }
+      .tabs { padding: 10px; }
+      .tab-button { padding: 9px 12px; font-size: 0.86rem; }
+    }
+    @media (max-width: 430px) {
+      .hero-actions, .button-row { display: grid; grid-template-columns: 1fr; }
+      .btn { text-align: center; width: 100%; }
+      .site-card { border-radius: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <span class="kicker">Website final | AcuityOS</span>
+      <h1>AcuityOS</h1>
+      <p>Es un sistema de inteligencia artificial generativa diseñado para transformar el proceso de triage en salas de emergencia, optimizando la priorización de pacientes y apoyando la toma de decisiones clínicas en tiempo real.</p>
+      <p>Esta versión mantiene el contenido y las secciones del PDF original, añade referencias APA 7ma edición y conserva únicamente el chatbot del Médico de Emergencia.</p>
+      <div class="hero-actions">
+        <a href="#website" class="btn">Ver secciones</a>
+        <a href="https://base44.app/api/apps/69ff8913df0366449a61b138/files/mp/public/69ff8913df0366449a61b138/de81e4383_dashboard_ed.html" class="btn secondary" target="_blank" rel="noopener">Abrir prototipo</a>
+        <a href="https://m365.cloud.microsoft/chat/?titleId=T_8de80e5f-9527-e245-a1f5-e171ae7b3c09&source=embedded-builder" class="btn secondary" target="_blank" rel="noopener">Chatbot Médico</a>
+      </div>
+    </div>
+    <div class="hero-image"><img src="acuityos-page-01.jpg" alt="Portada visual de AcuityOS"></div>
+  </header>
+
+  <main class="shell" id="website">
+    <div class="site-card">
+      <nav class="tabs"><button class="tab-button active" data-tab="inicio">1. Inicio</button>
+<button class="tab-button" data-tab="sistema">2. Sistema IA</button>
+<button class="tab-button" data-tab="problema">3. Problema</button>
+<button class="tab-button" data-tab="modelo">4. Modelo</button>
+<button class="tab-button" data-tab="etica">5. Ética</button>
+<button class="tab-button" data-tab="junta">6. Sala IA</button>
+<button class="tab-button" data-tab="prototipo">7. Prototipo</button>
+<button class="tab-button" data-tab="tiha">8. TIHA + IA</button>
+<button class="tab-button" data-tab="equipo">9. Equipo</button>
+<button class="tab-button" data-tab="preguntas">10. Preguntas</button>
+<button class="tab-button" data-tab="referencias">11. Referencias</button></nav>
+
+      <section class="panel active" id="inicio">
+        <div class="section-head"><span>Sección 1</span><h2>AcuityOS | Información del curso, misión y equipo</h2></div>
+        <p class="lead">AcuityOS integra IA, salud y estrategia empresarial para mejorar la eficiencia operativa y el bienestar del paciente.</p>
+        <div class="grid two">
+          <div class="card blue"><h3>Información del curso</h3><ul class="list"><li><strong>Curso:</strong> Generative Artificial Intelligence for Business Transformation (ADMI 6990)</li><li><strong>Institución:</strong> Universidad de Puerto Rico – Recinto de Río Piedras</li><li><strong>Profesor:</strong> Dra. Mariluz Serrano Ortiz</li><li><strong>Período:</strong> 3T 2025–2026</li></ul></div>
+          <div class="card blue"><h3>Equipo y roles</h3><ul class="list"><li><strong>Gabriel A. Velez Aponte:</strong> Administrador</li><li><strong>Milagros Munoz Figueroa:</strong> Médico</li><li><strong>Lizbeth M. Hernandez Mercado:</strong> Enfermera</li></ul></div>
+        </div>
+        <div class="highlight"><strong>Declaración de misión:</strong> Desarrollar una solución de IA que agilice la priorización clínica en emergencias, apoye decisiones informadas en tiempo real y contribuya a una atención más eficiente, segura y centrada en el paciente.</div>
+        <h3>Presentación de Milagros</h3><p>Reproduce el video aquí:</p>
+        <div class="video-wrap"><iframe src="https://player.vimeo.com/video/1196436935" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+        <div class="button-row"><a class="btn secondary" href="https://vimeo.com/1196436935?share=copy" target="_blank" rel="noopener">Abrir video en Vimeo</a></div>
+        
+    <div class="pdf-visual">
+      <img src="acuityos-page-01.jpg" alt="Página 1 del PDF original: portada, curso, misión, equipo y video." loading="lazy">
+      <p>Página 1 del PDF original: portada, curso, misión, equipo y video.</p>
+    </div>
+    
+      </section>
+
+      <section class="panel" id="sistema">
+        <div class="section-head"><span>Sección 2</span><h2>AcuityOS: Sistema de IA para Triage en Emergencias</h2></div>
+        <p class="lead">AcuityOS es una solución de inteligencia artificial generativa que revoluciona el proceso de triage en salas de emergencia. Utiliza algoritmos avanzados de machine learning para analizar síntomas, antecedentes médicos y datos en tiempo real, proporcionando recomendaciones de priorización precisas que mejoran la eficiencia operativa y los resultados clínicos.</p>
+        <div class="grid"><div class="card blue"><h3>Análisis Automático</h3><p>Análisis de síntomas y signos vitales para una evaluación rápida.</p></div><div class="card blue"><h3>Priorización Inteligente</h3><p>Clasificación de pacientes basada en urgencia clínica para optimizar el flujo.</p></div><div class="card blue"><h3>Apoyo en Tiempo Real</h3><p>Asistencia para decisiones clínicas, mejorando la respuesta del equipo.</p></div><div class="card blue"><h3>Integración Sencilla</h3><p>Compatibilidad con sistemas de registros médicos electrónicos existentes.</p></div><div class="card blue"><h3>Interfaz Intuitiva</h3><p>Diseñada para una fácil adopción por el personal de emergencias.</p></div></div>
+        
+    <div class="pdf-visual">
+      <img src="acuityos-page-02.jpg" alt="Página 2 del PDF original: sistema de IA para triage." loading="lazy">
+      <p>Página 2 del PDF original: sistema de IA para triage.</p>
+    </div>
+    
+      </section>
+
+      <section class="panel" id="problema">
+        <div class="section-head"><span>Sección 3</span><h2>Problema Organizacional y Oportunidad de Transformación</h2></div>
+        <p class="lead">El proceso ESI manual en salas de emergencia sigue dependiendo de juicios humanos rápidos, información incompleta y alta presión operativa. Esto genera un sistema reactivo, variable y altamente sensible al volumen de pacientes.</p>
+        <div class="grid"><div class="card"><h3>Clasificación inexacta</h3><p>La priorización depende de la interpretación individual del personal.</p></div><div class="card"><h3>Retrasos en pacientes críticos</h3><p>Casos urgentes pueden quedar subestimados, aumentando el tiempo de respuesta y el riesgo clínico.</p></div><div class="card"><h3>Congestión operativa</h3><p>La asignación ineficiente de recursos aumenta filas, sobrecarga al equipo y presión.</p></div></div>
+        <div class="stat-grid"><div class="stat"><strong>60%</strong><p>Sobrecapacidad</p></div><div class="stat"><strong>5–15%</strong><p>Mayor mortalidad</p></div><div class="stat"><strong>1 de 5</strong><p>Error en triage</p></div><div class="stat"><strong>25–35%</strong><p>Mejora con IA</p></div></div>
+        <h3>Stakeholders y por qué IA</h3><div class="grid"><div class="card blue"><h3>Pacientes</h3><p>Esperas prolongadas, peor experiencia y mayor riesgo clínico.</p></div><div class="card blue"><h3>Personal clínico</h3><p>Sobrecarga, presión de tiempo y mayor probabilidad de error.</p></div><div class="card blue"><h3>Hospital / Administración</h3><p>Costos, menor eficiencia y riesgos de cumplimiento.</p></div><div class="card blue"><h3>Analiza señales complejas</h3><p>Procesa síntomas, antecedentes y datos en tiempo real.</p></div><div class="card blue"><h3>Reduce variabilidad</h3><p>Estandariza el apoyo a la decisión clínica.</p></div><div class="card blue"><h3>Soporte, no sustituto</h3><p>AcuityOS fortalece la decisión final del equipo clínico.</p></div></div>
+        
+    <div class="pdf-visual">
+      <img src="acuityos-page-03.jpg" alt="Página 3 del PDF original: problema, evidencia, stakeholders y referencias académicas." loading="lazy">
+      <p>Página 3 del PDF original: problema, evidencia, stakeholders y referencias académicas.</p>
+    </div>
+    
+      </section>
+
+      <section class="panel" id="modelo">
+        <div class="section-head"><span>Sección 4</span><h2>Modelo de Negocio: AcuityOS</h2></div>
+        <div class="business-grid">
+          <div class="business-box"><h3>Alianzas Clave</h3><ul class="list"><li>Proveedores de EHR (Epic, Cerner)</li><li>Instituciones académicas médicas</li><li>Reguladores de salud</li></ul></div>
+          <div class="business-box"><h3>Actividades Clave</h3><ul class="list"><li>Desarrollo y mejora del algoritmo</li><li>Integración con sistemas EHR</li><li>Cumplimiento normativo</li></ul></div>
+          <div class="business-box"><h3>Recursos Clave</h3><ul class="list"><li>Equipo de desarrollo</li><li>Datos clínicos</li><li>Infraestructura cloud</li></ul></div>
+          <div class="business-box"><h3>Relaciones con Clientes</h3><ul class="list"><li>Soporte 24/7</li><li>Capacitación continua</li><li>Actualizaciones regulares</li></ul></div>
+          <div class="business-box"><h3>Propuesta de Valor</h3><ul class="list"><li>Mejora de precisión</li><li>Reducción de espera</li><li>Apoyo en tiempo real</li></ul></div>
+          <div class="business-box"><h3>Segmentos de Clientes</h3><ul class="list"><li>Hospitales</li><li>Redes de emergencia</li><li>Clínicas de urgencia</li></ul></div>
+          <div class="business-box"><h3>Estructura de Costos</h3><ul class="list"><li>Software</li><li>Cloud</li><li>Cumplimiento</li></ul></div>
+          <div class="business-box"><h3>Canales</h3><ul class="list"><li>Ventas directas</li><li>Partnerships</li><li>Marketing digital</li></ul></div>
+          <div class="business-box"><h3>Fuentes de Ingresos</h3><ul class="list"><li>Licencias</li><li>Implementación</li><li>Consultoría y soporte</li></ul></div>
+        </div>
+        
+    <div class="pdf-visual">
+      <img src="acuityos-page-04.jpg" alt="Página 4 del PDF original: modelo de negocio." loading="lazy">
+      <p>Página 4 del PDF original: modelo de negocio.</p>
+    </div>
+    
+      </section>
+
+      <section class="panel" id="etica">
+        <div class="section-head"><span>Sección 5</span><h2>Marco Ético y Gobernanza Responsable</h2></div>
+        <h3>Aplicación de Floridi et al. (2021)</h3>
+        <div class="grid"><div class="card blue"><h3>Beneficencia</h3><p>Reducir errores de triage y tiempos de espera.</p></div><div class="card blue"><h3>No maleficencia</h3><p>Privacidad, HIPAA y monitoreo de sesgos.</p></div><div class="card blue"><h3>Autonomía</h3><p>Asistir al profesional sin sustituir su juicio.</p></div><div class="card blue"><h3>Justicia</h3><p>Prevenir sesgos y daños.</p></div><div class="card blue"><h3>Explicabilidad</h3><p>Hacer comprensibles las recomendaciones.</p></div></div>
+        <h3>Riesgos, mitigaciones y gobernanza</h3><div class="grid"><div class="card"><h3>Riesgos</h3><ul class="list"><li>Sobredependencia</li><li>Ataques cibernéticos</li><li>Análisis clínico erróneo</li></ul></div><div class="card"><h3>Mitigaciones</h3><ul class="list"><li>Evaluación de sesgos</li><li>Privacidad por diseño</li><li>Registro de errores</li></ul></div><div class="card"><h3>Gobernanza</h3><ul class="list"><li>Comité Clínico</li><li>Comité Tecnológico</li><li>Auditoría Independiente</li></ul></div></div>
+        
+    <div class="pdf-visual">
+      <img src="acuityos-page-05.jpg" alt="Página 5 del PDF original: marco ético y gobernanza responsable." loading="lazy">
+      <p>Página 5 del PDF original: marco ético y gobernanza responsable.</p>
+    </div>
+    
+      </section>
+
+      <section class="panel" id="junta">
+        <div class="section-head"><span>Sección 6</span><h2>Sala de Junta Simulada con IA | Médico de Emergencia</h2></div>
+        <p class="lead">El PDF original presenta tres agentes: enfermero, médico y administrador. Para esta versión final se mantiene únicamente el agente de <strong>Médico de Emergencia</strong>, según el ajuste solicitado.</p>
+        <div class="highlight"><h3>Acceso al Chatbot Médico de Emergencia</h3><p>Este chatbot se conserva porque representa la perspectiva clínica central para evaluar riesgos de triage, síntomas atípicos y límites del juicio automatizado.</p><div class="button-row"><a href="https://m365.cloud.microsoft/chat/?titleId=T_8de80e5f-9527-e245-a1f5-e171ae7b3c09&source=embedded-builder" class="btn" target="_blank" rel="noopener">Abrir Chatbot Médico de Emergencia</a></div></div>
+        <div class="grid two"><div class="card blue"><h3>Objeciones relevantes</h3><ul class="list"><li>No sustituye el juicio clínico.</li><li>Subestima presentaciones atípicas.</li><li>No revalúa cambios de severidad.</li></ul></div><div class="card blue"><h3>Refinamiento</h3><ul class="list"><li>Añadir personalidad y responsabilidades.</li><li>Brindar ejemplos clínicos diarios.</li><li>Mostrar estructura ESI del hospital.</li></ul></div></div>
+        <div class="highlight"><strong>Decisión ética:</strong> suplir al agente con información confiable pertinente a su área de trabajo para responder de forma más realista, humana y empática.</div>
+        
+    <div class="pdf-visual">
+      <img src="acuityos-page-06.jpg" alt="Página 6 del PDF original: sala de junta. Solo queda activo el chatbot médico." loading="lazy">
+      <p>Página 6 del PDF original: sala de junta. Solo queda activo el chatbot médico.</p>
+    </div>
+    
+      </section>
+
+      <section class="panel" id="prototipo">
+        <div class="section-head"><span>Sección 7</span><h2>Prototipo Funcional Business AI</h2></div>
+        <p class="lead">AcuityOS es un dashboard funcional que simula el apoyo de una solución de IA en el triaje de emergencias. Organiza pacientes según la escala ESI, muestra métricas clave por nivel de urgencia, permite revisar detalles clínicos y facilita el registro de nuevos pacientes.</p>
+        <div class="highlight"><h3>Acceso al prototipo funcional</h3><p>Presiona el botón para abrir el prototipo de AcuityOS.</p><div class="button-row"><a href="https://base44.app/api/apps/69ff8913df0366449a61b138/files/mp/public/69ff8913df0366449a61b138/de81e4383_dashboard_ed.html" class="btn" target="_blank" rel="noopener">Abrir Prototipo de AcuityOS</a></div></div>
+        <div class="tags"><span class="tag">Priorización visual</span><span class="tag">Organización de pacientes</span><span class="tag">Revisión de signos vitales</span><span class="tag">Registro de pacientes</span><span class="tag">Actualización de estado</span><span class="tag">Apoyo a decisión clínica</span></div>
+        
+    <div class="pdf-visual">
+      <img src="acuityos-page-07.jpg" alt="Página 7 del PDF original: prototipo funcional Business AI." loading="lazy">
+      <p>Página 7 del PDF original: prototipo funcional Business AI.</p>
+    </div>
+    
+      </section>
+
+      <section class="panel" id="tiha">
+        <div class="section-head"><span>Sección 8</span><h2>Reflexión TIHA + Declaración de Uso de IA</h2></div>
+        <div class="grid"><div class="card blue"><h3>1. Reflexión Humanizadora</h3><p>Descubrimos que nuestro valor no estaba en “hacer más rápido”, sino en pensar mejor juntos.</p></div><div class="card blue"><h3>2. Declaración Transparente</h3><p>Utilizamos Gamma y Copilot para estructurar, redactar, analizar ideas y crear chatbots.</p></div><div class="card blue"><h3>3. Lecciones Aprendidas</h3><p>Las perspectivas multidisciplinarias enriquecen la solución.</p></div><div class="card blue"><h3>4. Proyección Futura</h3><p>IA como apoyo, trabajo coordinado y tecnología al servicio de la empatía.</p></div></div>
+        <div class="highlight"><strong>Declaración transparente de uso de IA:</strong> Se utilizaron herramientas de IA para estructurar, redactar, sintetizar, simular conversaciones y diseñar componentes del proyecto. El equipo revisó, corrigió y validó el resultado final para preservar la voz auténtica y la responsabilidad humana.</div>
+        
+    <div class="pdf-visual">
+      <img src="acuityos-page-08.jpg" alt="Página 8 del PDF original: reflexión TIHA y declaración de uso de IA." loading="lazy">
+      <p>Página 8 del PDF original: reflexión TIHA y declaración de uso de IA.</p>
+    </div>
+    
+      </section>
+
+      <section class="panel" id="equipo">
+        <div class="section-head"><span>Sección 9</span><h2>Cómo crecimos como equipo</h2></div>
+        <p class="lead">Este equipo ya había trabajado junto en varias clases anteriores. Sin embargo, este proyecto nos llevó a un nivel completamente nuevo de colaboración.</p>
+        <div class="grid"><div class="card blue"><h3>Comunicación clara</h3><p>Mejoramos la comunicación entre roles técnicos y clínicos.</p></div><div class="card blue"><h3>Confianza mutua</h3><p>Nos apoyamos más y trabajamos con mayor confianza.</p></div><div class="card blue"><h3>Aprendizaje conjunto</h3><p>Aprendimos juntos a resolver desafíos y adaptarnos.</p></div></div>
+        
+    <div class="pdf-visual">
+      <img src="acuityos-page-09.jpg" alt="Página 9 del PDF original: crecimiento del equipo." loading="lazy">
+      <p>Página 9 del PDF original: crecimiento del equipo.</p>
+    </div>
+    
+      </section>
+
+      <section class="panel" id="preguntas">
+        <div class="section-head"><span>Sección 10</span><h2>Preguntas</h2></div>
+        <p class="lead">Estamos listos para responder a sus inquietudes y comentarios.</p>
+        
+    <div class="pdf-visual">
+      <img src="acuityos-page-10.jpg" alt="Página 10 del PDF original: preguntas y cierre." loading="lazy">
+      <p>Página 10 del PDF original: preguntas y cierre.</p>
+    </div>
+    
+      </section>
+
+      <section class="panel" id="referencias">
+        <div class="section-head"><span>Sección 11</span><h2>Referencias en formato APA 7ma edición</h2></div>
+        <p class="lead">Se añaden las referencias solicitadas para cumplir con los requisitos de entrega.</p>
+        <ol class="reference-list">
+          <li>Brynjolfsson, E., Li, D., & Raymond, L. R. (2025). Generative AI at work. <em>The Quarterly Journal of Economics, 140</em>(2), 889–938.</li>
+          <li>Floridi, L., Cowls, J., Beltrametti, M., Chatila, R., Chazerand, P., Dignum, V., Luetge, C., Madelin, R., Pagallo, U., Rossi, F., Schafer, B., Valcke, P., & Vayena, E. (2021). An ethical framework for a good AI society: Opportunities, risks, principles, and recommendations. In <em>Ethics, governance, and policies in artificial intelligence</em> (pp. 19–39). Springer. https://doi.org/10.1007/978-3-030-81907-1_3</li>
+          <li>Infobae. (2025). <em>Bill Gates, cofundador de Microsoft: “Dentro de diez años, la mayoría de las tareas humanas podrán ser realizadas por inteligencia artificial”</em>.</li>
+          <li>Serrano, O. J. (2026, 28 de abril). <em>Supremo advierte a abogados sobre inteligencia artificial</em>. NotiCel.</li>
+          <li>Gilboy, N., Tanabe, P., Travers, D., & Rosenau, A. M. (2020). <em>Emergency Severity Index (ESI): A triage tool for emergency department care</em>. Agency for Healthcare Research and Quality.</li>
+          <li>Hoot, N. R., & Aronsky, D. (2008). Systematic review of emergency department crowding: Causes, effects, and solutions. <em>Annals of Emergency Medicine, 52</em>(2), 126–136.</li>
+          <li>Gøransson, K. E., Ehrenberg, A., & Marklund, B. (2015). Accuracy and concordance of nurses in emergency triage. <em>Scandinavian Journal of Trauma, Resuscitation and Emergency Medicine, 23</em>.</li>
+        </ol>
+        <div class="highlight"><strong>Nota de curaduría crítica:</strong> las referencias locales, académicas y empresariales fortalecen el contexto del proyecto al conectar el uso de IA con responsabilidad profesional, riesgo de alucinaciones, productividad y límites éticos de la automatización.</div>
+      </section>
+    </div>
+  </main>
+
+  <footer><strong>AcuityOS</strong><p>Website final | IA generativa para apoyo al triage en salas de emergencia</p></footer>
+
+  <script>
+    const buttons = document.querySelectorAll(".tab-button");
+    const panels = document.querySelectorAll(".panel");
+    function activateTab(tabId) {
+      buttons.forEach((button) => {
+        const active = button.dataset.tab === tabId;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      panels.forEach((panel) => panel.classList.toggle("active", panel.id === tabId));
+      const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+      if (activeButton) activeButton.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+      history.replaceState(null, "", `#${tabId}`);
+    }
+    buttons.forEach((button) => button.addEventListener("click", () => activateTab(button.dataset.tab)));
+    const initial = window.location.hash.replace("#", "");
+    if (initial && document.getElementById(initial)) activateTab(initial);
+  </script>
+</body>
+</html>
